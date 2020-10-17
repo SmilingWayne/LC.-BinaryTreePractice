@@ -19,15 +19,17 @@ public class threadBinaryTree {
             System.out.println(temp[0]);
             heros[i] = new heroNode(Integer.parseInt(temp[0]), temp[1]);
         }
+        scan.close();
         heros[0].setLeft(heros[1]);
         heros[0].setRight(heros[2]);
         heros[1].setLeft(heros[3]);
         heros[1].setRight(heros[4]);
-        heros[2].setLeft(5);
+        heros[2].setLeft(heros[5]);
         Binary binaryHelpertree = new Binary();
         binaryHelpertree.setRoot(heros[0]);
-        binaryHelpertree.threadNodes(heros[3]);
-        binaryHelpertree.displaypre();
+        binaryHelpertree.threadNodes(heros[0]);
+        binaryHelpertree.threadDisplay();
+        //System.out.println(heros[2].left);
     }
 }
 
@@ -37,12 +39,23 @@ class Binary{
     public void setRoot(heroNode root){
         this.root = root;
     }
-    public void displaypre(){
-        System.out.println(pre.right);
+    public void threadDisplay(){
+        heroNode node = root;
+        while(node!=null) {
+            while (node.getLeftType() == 0) {
+                node = node.getLeft();
+            }
+            System.out.println(node);
+            while ( node.getRightType() == 1) {
+                node = node.getRight();
+                System.out.println(node);
+            }
+            node = node.getRight();
+        }
     }
+
     public void threadNodes(heroNode node){
         if(node == null){
-
             return;
         }
         threadNodes(node.getLeft());
@@ -52,7 +65,8 @@ class Binary{
         }
         if(pre!=null && pre.getRight()==null){
             pre.setRight(node);
-            pre.setRight(1);
+            pre.setRight(1); //为什么一定是修改pre的right判别数值？//
+            //node.setRight(1);
         }
         pre = node;
         threadNodes(node.getRight());
@@ -90,10 +104,7 @@ class Binary{
         else{
             root.delNode(number);
         }
-
     }
-
-
 }
 class heroNode {
     public int no;
@@ -115,7 +126,6 @@ class heroNode {
     public int getRightType(){
         return this.rightType;
     }
-
     public void setLeft(int left) {
         this.leftType = left;
     }
@@ -230,5 +240,9 @@ class heroNode {
         if (this.right != null) {
             this.right.delNode(number);
         }
+    }
+    @Override
+    public String toString(){
+        return "[Name = " + this.name + " , "+ "no = "+ this.no + "].";
     }
 }
